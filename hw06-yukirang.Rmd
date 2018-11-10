@@ -1,0 +1,288 @@
+---
+title: "hw06_yukirang"
+output: html_document
+---
+```{r}
+library(gapminder)
+library(tidyverse)
+library(stringr)
+library(ggplot2)
+```
+
+# 1. Character data
+### String length
+Try with different type of data, both the number and logical variable are trasferred to string.
+```{r}
+str_length(c("This", "is", 233, TRUE))
+```
+### Combining strings
+```{r}
+str_c("1", "22", "333")
+```
+Combining with a separater:
+```{r}
+str_c("Try", "this", sep = "%")
+```
+### Subsetting strings
+str_sub() takes start and end arguments which give the (inclusive) position of the substring:
+```{r}
+(x <- c("We ", "ar e ", "family","!"))
+str_sub(x, 2, 4)
+```
+### Locales
+Changing case:
+```{r}
+str_to_upper(c("a", "i"))
+```
+Sorting by English alphabetically:
+```{r}
+str_sort(x, locale = "en")
+```
+Removing the wrapping spaces:
+```{r}
+str_wrap(x)
+```
+### Matching
+1.Basic matching:
+```{r}
+str_view(x, "a")
+```
+Matching any character with "."
+```{r}
+str_view(x, ".a.")
+```
+2.Anchors
+Start matching:
+```{r}
+str_view(x, "^a")
+```
+End matching:
+```{r}
+str_view(x, "y$")
+```
+3.Character classes and alternatives
+```{r}
+str_view(c("abc", "a.c", "a..c", "a.c."), "a[.]c")
+```
+Matching with a "|" character:
+```{r}
+str_view(c("brace", "bruce"), "br(a|u)c.")
+```
+### Repetition
+
+```{r}
+y <- "I'm loooooooving it!"
+str_view(y, "oo?")
+```
+Specify a repitition time:
+```{r}
+str_view(y, "o{2,}")
+```
+### Tools
+Detect matches:
+```{r}
+x
+str_detect(x, "a")
+```
+Subsets:
+```{r}
+str_subset(words, "go$")
+```
+With filtering:
+```{r}
+df <- tibble(
+  word = words, 
+  i = seq_along(word)
+)
+df %>% 
+  filter(str_detect(word, "go$")) %>% 
+  knitr::kable()
+```
+
+Counting:
+```{r}
+z <- c("ah","haha","aaaaaa")
+str_count(z, "a")
+```
+Mean:
+```{r}
+# The mean of  vowels per word
+mean(str_count(z, "[aeiou]"))
+```
+
+Replacing matches:
+```{r}
+x <- c("Escape", "your", "comfort","zone")
+# replace the first matching element
+str_replace(x, "[aeiou]", "-")
+# replace all matching element
+str_replace_all(x, "[aeiou]", "-")
+```
+### Splitting
+
+```{r}
+(a <- sentences %>%
+  head(6) %>% 
+  #use "simplify = TRUE" to return a matrix
+  str_split(" ", simplify = TRUE))
+```
+Find matches
+```{r}
+x
+str_locate(x, "your")
+```
+### Other types of pattern
+Apply regex() to control details of the match
+Ignore the case:
+```{r}
+x
+str_view(x, regex("e", ignore_case = TRUE))
+```
+coll(): compare strings using standard collation rules.
+```{r}
+a <- c("A", "a")
+str_subset(a, coll("a", ignore_case = TRUE))
+```
+ use boundary() to match boundaries:
+```{r}
+x
+str_extract_all(x, boundary("word"))
+```
+### Other uses of regular expressions
+Searching from the global environment:
+```{r}
+apropos("split")
+```
+
+# 6. Work with a nested data frame
+### Nest the data by country (and continent')
+Let's first grab a sense of the data without nesting:
+```{r}
+gap_nested <- gapminder %>% 
+   group_by(continent, country)
+summary(gap_nested)
+gap_nested %>% 
+  head(10) %>% 
+  knitr::kable()
+```
+And now nest the data:
+```{r}
+(gap_nested <- gap_nested %>% 
+   nest())
+```
+
+We now see there are seperate tibbles for different countries.
+
+### Fit a model of life expectancy against year
+Let's see the change of lifeExp over year of China:
+```{r}
+(my_lm <- lm(lifeExp ~ log(gdpPercap), data=gap_nested[[25, "data"]]))
+ggplot(gap_nested[[25, "data"]], aes(year, lifeExp)) +
+    geom_point() +
+    geom_smooth(method="lm") +
+    ggtitle("Linear Regression Model Fitted of lifeExp against year on China")
+  
+```
+
+### Apply a function map() and mutate()
+```{r}
+# the fitted model
+my_lm <- function(df) {
+  lm(lifeExp ~ I(year - 1950), data = df)
+}
+my_lm(gap_nested[[25, "data"]])
+#map() the fitting function my_lm() to the 25th(China) and 26th(Colombia) elements of gap_nested$data.
+fits <- map(gap_nested$data[25:26], my_lm)
+fits
+```
+Scale this up to all countries:
+```{r}
+(gap_nested <- gap_nested %>% 
+   mutate(fit = map(data, my_lm)))
+```
+Now we have an extra list of fitted linear models.
+
+### Other information out of the linear models:
+1."tidy" Intercept and  slope:
+```{r}
+library(broom)
+tidy(gap_nested$fit[[25]]) %>% 
+  knitr::kable()
+```
+Extend to all other countries:
+```{r}
+(gap_nested <- gap_nested %>% 
+  mutate(tidy = map(fit, tidy)))
+```
+Now we have a tidy column of several tibbles.
+
+2. One row summary using glance():
+```{r}
+glance(gap_nested$fit[[25]])
+```
+Looks like we get a bunch of statistical data:)
+
+3. Augment the original data with other columns:
+```{r}
+augment(gap_nested$fit[[25]])
+```
+Now we have several colums, with the fitted rows of lifeExp.
+4. unnest the data in the dataframe:
+```{r}
+(gap_coefs <- gap_nested %>% 
+   select(continent, country, tidy) %>% 
+   unnest())
+```
+5. Adding the previous scope and intercept with recode():
+```{r}
+(gap_coefs <- gap_coefs %>%
+   mutate(term = recode(term,
+                        `(Intercept)` = "intercept",
+                        `I(year - 1950)` = "slope")))
+```
+6. Reshaping the estimates of each continents and make a summary:
+```{r}
+(gap_ests <- gap_coefs %>% 
+   select(continent:estimate) %>% 
+   spread(key = term, value = estimate))
+gap_ests %>% 
+  select(intercept, slope) %>% 
+  summary()
+```
+6. Making a plot of the whole distribution:
+```{r}
+ggplot(gap_coefs, aes(x = estimate)) +
+  geom_density() + 
+  # assing a density projection on the x-axis
+  geom_rug() +
+  # using scales to expand the plot throughly
+  facet_wrap(~ term, scales = "free")
+```
+
+Inspiration for the modelling and downstream inspiration：
+* From the plot of linear regression model fitted on China, it is easy to notice that the linear model doesn't fitted very well. There is a dramatical change of lifeExp between 1950s and 1970s. And the the slope becomes smallers.
+* From the residual we notice that during the high range of lifeExp, say 70+, it doesn't performs that well cause it stays negative and keeps going down. While from 58 to 70+, it keeps going done.
+
+* From the std.error we can also find that the data of Zimbabwe, Rwanda and Swaziland seems not that suitable for our model.
+Let's see what's going on:
+```{r}
+other <- gapminder %>% 
+  filter(country == "Zimbabwe" | country == "Rwanda" | country == "Swaziland") %>% 
+  data.frame()
+other %>% 
+  ggplot(aes(year, lifeExp, colour=country)) +
+  geom_smooth(se = FALSE,method = "lm") + # fit linear regression
+  geom_point() +
+  ggtitle("Linear Regression Model Fitted of lifeExp against year")
+```
+What if we try some different methods? Mabe for one distinct country loess performs better. However this can be overfitting when it is extended.
+
+```{r}
+other %>% 
+  filter(country == "Zimbabwe") %>% 
+  ggplot(aes(year, lifeExp, colour = "country")) +
+  geom_smooth(method = "loess") + # fit linear regression
+  geom_point() +
+  ggtitle("Linear Regression Model Fitted of lifeExp against year on Zimbabwe")
+```
+
