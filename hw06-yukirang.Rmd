@@ -1,6 +1,10 @@
 ---
 title: "hw06_yukirang"
-output: html_document
+output:
+   html_document:
+      self_contained: false
+      keep_md: true
+  
 ---
 ```{r}
 library(gapminder)
@@ -95,8 +99,7 @@ df <- tibble(
   i = seq_along(word)
 )
 df %>% 
-  filter(str_detect(word, "go$")) %>% 
-  knitr::kable()
+  filter(str_detect(word, "go$"))
 ```
 
 Counting:
@@ -162,8 +165,7 @@ gap_nested <- gapminder %>%
    group_by(continent, country)
 summary(gap_nested)
 gap_nested %>% 
-  head(10) %>% 
-  knitr::kable()
+  head(10) 
 ```
 And now nest the data:
 ```{r}
@@ -181,7 +183,6 @@ ggplot(gap_nested[[25, "data"]], aes(year, lifeExp)) +
     geom_point() +
     geom_smooth(method="lm") +
     ggtitle("Linear Regression Model Fitted of lifeExp against year on China")
-  
 ```
 
 ### Apply a function map() and mutate()
@@ -206,8 +207,7 @@ Now we have an extra list of fitted linear models.
 1."tidy" Intercept and  slope:
 ```{r}
 library(broom)
-tidy(gap_nested$fit[[25]]) %>% 
-  knitr::kable()
+tidy(gap_nested$fit[[25]]) 
 ```
 Extend to all other countries:
 ```{r}
@@ -275,7 +275,8 @@ other %>%
   geom_point() +
   ggtitle("Linear Regression Model Fitted of lifeExp against year")
 ```
-What if we try some different methods? Mabe for one distinct country loess performs better. However this can be overfitting when it is extended.
+
+What if we try some different methods? Maybe for one distinct country loess performs better. However this can be overfitting when it is extended.
 
 ```{r}
 other %>% 

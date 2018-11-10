@@ -116,16 +116,16 @@ str_wrap(x)
 str_view(x, "a")
 ```
 
-<!--html_preserve--><div id="htmlwidget-cd79a83ec9049222f3fb" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cd79a83ec9049222f3fb">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li><span class='match'>a<\/span>r e <\/li>\n  <li>f<span class='match'>a<\/span>mily<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-aa80b07f657ad5fde6d8" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aa80b07f657ad5fde6d8">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li><span class='match'>a<\/span>r e <\/li>\n  <li>f<span class='match'>a<\/span>mily<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 Matching any character with "."
 
 ```r
 str_view(x, ".a.")
 ```
 
-<!--html_preserve--><div id="htmlwidget-53a7a2db7adcaf9f1484" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-53a7a2db7adcaf9f1484">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li>ar e <\/li>\n  <li><span class='match'>fam<\/span>ily<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-05a5c79b99b43fa1d745" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-05a5c79b99b43fa1d745">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li>ar e <\/li>\n  <li><span class='match'>fam<\/span>ily<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 2.Anchors
 Start matching:
 
@@ -133,32 +133,32 @@ Start matching:
 str_view(x, "^a")
 ```
 
-<!--html_preserve--><div id="htmlwidget-455a28a21db77284316d" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-455a28a21db77284316d">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li><span class='match'>a<\/span>r e <\/li>\n  <li>family<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-e393704e83a91ddd3ab9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e393704e83a91ddd3ab9">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li><span class='match'>a<\/span>r e <\/li>\n  <li>family<\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 End matching:
 
 ```r
 str_view(x, "y$")
 ```
 
-<!--html_preserve--><div id="htmlwidget-2cb658079fd5d6d5f863" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2cb658079fd5d6d5f863">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li>ar e <\/li>\n  <li>famil<span class='match'>y<\/span><\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-a3cdb2f32e070fc454d9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a3cdb2f32e070fc454d9">{"x":{"html":"<ul>\n  <li>We <\/li>\n  <li>ar e <\/li>\n  <li>famil<span class='match'>y<\/span><\/li>\n  <li>!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 3.Character classes and alternatives
 
 ```r
 str_view(c("abc", "a.c", "a..c", "a.c."), "a[.]c")
 ```
 
-<!--html_preserve--><div id="htmlwidget-b352cbbcd74f3687ee2d" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b352cbbcd74f3687ee2d">{"x":{"html":"<ul>\n  <li>abc<\/li>\n  <li><span class='match'>a.c<\/span><\/li>\n  <li>a..c<\/li>\n  <li><span class='match'>a.c<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-825079e3d9e4094ac76c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-825079e3d9e4094ac76c">{"x":{"html":"<ul>\n  <li>abc<\/li>\n  <li><span class='match'>a.c<\/span><\/li>\n  <li>a..c<\/li>\n  <li><span class='match'>a.c<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 Matching with a "|" character:
 
 ```r
 str_view(c("brace", "bruce"), "br(a|u)c.")
 ```
 
-<!--html_preserve--><div id="htmlwidget-90f2bad34faf7ec498c5" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-90f2bad34faf7ec498c5">{"x":{"html":"<ul>\n  <li><span class='match'>brace<\/span><\/li>\n  <li><span class='match'>bruce<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-06176cd8501e0a7cf0ba" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-06176cd8501e0a7cf0ba">{"x":{"html":"<ul>\n  <li><span class='match'>brace<\/span><\/li>\n  <li><span class='match'>bruce<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 ### Repetition
 
 
@@ -167,16 +167,16 @@ y <- "I'm loooooooving it!"
 str_view(y, "oo?")
 ```
 
-<!--html_preserve--><div id="htmlwidget-7b2863d1712e68bd320e" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7b2863d1712e68bd320e">{"x":{"html":"<ul>\n  <li>I'm l<span class='match'>oo<\/span>oooooving it!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-15b7cd99cef90540c908" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-15b7cd99cef90540c908">{"x":{"html":"<ul>\n  <li>I'm l<span class='match'>oo<\/span>oooooving it!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 Specify a repitition time:
 
 ```r
 str_view(y, "o{2,}")
 ```
 
-<!--html_preserve--><div id="htmlwidget-090b7ab1cec5ccaab06f" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-090b7ab1cec5ccaab06f">{"x":{"html":"<ul>\n  <li>I'm l<span class='match'>ooooooo<\/span>ving it!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-a4587bac5ede2664121a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a4587bac5ede2664121a">{"x":{"html":"<ul>\n  <li>I'm l<span class='match'>ooooooo<\/span>ving it!<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 ### Tools
 Detect matches:
 
@@ -327,8 +327,8 @@ x
 str_view(x, regex("e", ignore_case = TRUE))
 ```
 
-<!--html_preserve--><div id="htmlwidget-ca3198830d410bd2c838" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ca3198830d410bd2c838">{"x":{"html":"<ul>\n  <li><span class='match'>E<\/span>scape<\/li>\n  <li>your<\/li>\n  <li>comfort<\/li>\n  <li>zon<span class='match'>e<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-088aef411f4a2d6b21b0" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-088aef411f4a2d6b21b0">{"x":{"html":"<ul>\n  <li><span class='match'>E<\/span>scape<\/li>\n  <li>your<\/li>\n  <li>comfort<\/li>\n  <li>zon<span class='match'>e<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 coll(): compare strings using standard collation rules.
 
 ```r
@@ -756,7 +756,8 @@ other %>%
 ```
 
 ![](hw06-yukirang_files/figure-html/unnamed-chunk-42-1.png)<!-- -->
-What if we try some different methods? Mabe for one distinct country loess performs better. However this can be overfitting when it is extended.
+
+What if we try some different methods? Maybe for one distinct country loess performs better. However this can be overfitting when it is extended.
 
 
 ```r
